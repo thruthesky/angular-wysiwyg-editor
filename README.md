@@ -55,6 +55,16 @@ const html = this.editorComponent.getContent();
 ></app-editor-component>
 ````
 
+* How to set cursor.
+  For post writing, you will need to put cursor on subject input tag.
+  For comment write/edit, you will need to put cursor on editor.
+
+```` html
+      <app-editor-component #editorComponent *ngIf=" mode != 'fake' "
+        [init]=" { content: comment?.content_original, cursor: true }"
+        [buttons]="['bold', 'italic', 'underline', 'strike', 'fontsize', 'forecolor', 'backcolor', 'highlight', 'link', 'unink', 'table', 'formatblock', 'insertline', 'insertimage', 'orderedlist', 'unorderedlist', 'left', 'center', 'removeformat', 'big', 'normal']"
+      ></app-editor-component>
+````
 
 * See examples folder to get sample working code.
     You can delete sample folder if you don't want.
