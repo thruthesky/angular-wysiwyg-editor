@@ -22,3 +22,4 @@ import { EditorModule } from 'app/modules/angular-wysiwyg-editor/editor.module';
 ````
 
 * See examples folder to get sample working code.
+    You can delete sample folder if you don't want.
