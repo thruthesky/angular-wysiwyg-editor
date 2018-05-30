@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, OnChanges, AfterViewInit } from '@angular/core';
 type COMMAND = 'bold' | 'italic' | 'underline' | 'fontsize' | 'forecolor' | 'backcolor'
   | 'highlight' | 'link' | 'unlink' | 'table' | 'fontname' | 'formatblock' | 'indent' | 'outdent'
   | 'insertline' | 'insertimage' | 'orderedlist' | 'unorderedlist' | 'left' | 'center' | 'right'
@@ -8,16 +8,20 @@ type COMMAND = 'bold' | 'italic' | 'underline' | 'fontsize' | 'forecolor' | 'bac
   templateUrl: './editor.component.html',
   styles: [`
     .content {
+      overflow: auto;
       border: 1px solid grey;
       height: 200px;
     }
     .content[size="big"] { height: 600px; }
   `]
 })
-export class EditorComponent implements OnInit, OnChanges {
+export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('editorContent') editorComponent: ElementRef;
 
+  @Input() init = {
+    content: ''
+  };
   /**
    * default buttons.
    */
@@ -31,8 +35,17 @@ export class EditorComponent implements OnInit, OnChanges {
   ngOnChanges() {
 
   }
+  ngAfterViewInit() {
+    console.log('EditorComponent::ngAfterViewInit() ', this.init);
+    if ( this.init.content ) {
+      this.putContent( this.init.content );
+    }
+  }
   getContent(): string {
     return this.editorComponent.nativeElement.innerHTML;
+  }
+  putContent(html: string) {
+    this.editorComponent.nativeElement.innerHTML = html;
   }
   private is(buttonName: COMMAND) {
     if ( this.buttons === null ) {

@@ -26,13 +26,33 @@ import { EditorModule } from 'app/modules/angular-wysiwyg-editor/editor.module';
 
 ```` html
   <app-editor-component #editorComponent
-    [buttons]="['bold', 'italic', 'unerline', 'fontsize', 'forecolor', 'backcolor', 'highlight', 'link', 'unink', 'table', 'formatblock', 'insertline', 'insertimage', 'orderedlist', 'unorderedlist', 'left', 'center', 'removeformat', 'strike', 'big', 'normal']"
+    [buttons]="['bold', 'italic', 'underline', 'fontsize', 'forecolor', 'backcolor', 'highlight', 'link', 'unink', 'table', 'formatblock', 'insertline', 'insertimage', 'orderedlist', 'unorderedlist', 'left', 'center', 'removeformat', 'strike', 'big', 'normal']"
   ></app-editor-component>
 ````
 
-* And get the HTML content of the editor like below.
+* And put/get the HTML content of the editor like below.
 
+```` typescript
+/**
+ * Put html into the editor
+ */
+ngAfterViewInit() {
+    this.editorComponent.putContent( this.post['content_original'] );
+}
+/**
+ * Get the HTML of editor
+ */
+const html = this.editorComponent.getContent();
 ````
+
+* There is another handy way to insert HTML into editor.
+  When the component is created dynamically using `*ngIf=" ... "`, it is not easy to know when `@ViewChild() editor: EditComponet;` is ready to use `editor.putContent()`. It often causes `calling putContent() of undefined`. In this case you can use `[init]` property to insert the default HTML content into editor.
+
+```` html
+<app-editor-component #editorComponent *ngIf=" mode != 'fake' "
+  [init]=" { content: comment.content_original }"
+  [buttons]="['bold', 'italic', 'unerline', 'fontsize', 'forecolor', 'backcolor', 'highlight', 'link', 'unink', 'table', 'formatblock', 'insertline', 'insertimage', 'orderedlist', 'unorderedlist', 'left', 'center', 'removeformat', 'strike', 'big', 'normal']"
+></app-editor-component>
 ````
 
 
