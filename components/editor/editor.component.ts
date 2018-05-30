@@ -1,5 +1,8 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
-
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, OnChanges } from '@angular/core';
+type COMMAND = 'bold' | 'italic' | 'underline' | 'fontsize' | 'forecolor' | 'backcolor'
+  | 'highlight' | 'link' | 'unlink' | 'table' | 'fontname' | 'formatblock' | 'indent' | 'outdent'
+  | 'insertline' | 'insertimage' | 'orderedlist' | 'unorderedlist' | 'left' | 'center' | 'right'
+  | 'removeformat' | 'strke' | 'big' | 'normal';
 @Component({
   selector: 'app-editor-component',
   templateUrl: './editor.component.html',
@@ -11,22 +14,35 @@ import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@
     .content[size="big"] { height: 600px; }
   `]
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnChanges {
 
   @ViewChild('editorContent') editorComponent: ElementRef;
 
   /**
    * default buttons.
    */
-  @Input() buttons = ['bold', 'underline'];
+  @Input() buttons: Array<COMMAND> = null;
   contentSize: 'big' | 'normal' = 'normal';
   constructor() { }
 
   ngOnInit() {
   }
 
+  ngOnChanges() {
+
+  }
   getContent(): string {
     return this.editorComponent.nativeElement.innerHTML;
+  }
+  private is(buttonName: COMMAND) {
+    if ( this.buttons === null ) {
+      return true;
+    }
+    // console.log(buttonName);
+    // console.log(this.buttons);
+    const re = this.buttons.includes(buttonName);
+    // console.log('re: ', re);
+    return re;
   }
   @HostListener('input', ['$event.target']) onContentChange(target: Element) {
     if (target && target.className && target.className === 'content') {
@@ -34,38 +50,38 @@ export class EditorComponent implements OnInit {
     }
   }
 
-  execCommand(commandName: string, ui = false, value?: any): boolean {
+  private execCommand(commandName: string, ui = false, value?: any): boolean {
     return document.execCommand(commandName, ui, value);
   }
 
-  bold(event: Event) {
+  private bold(event: Event) {
     this.execCommand('bold');
     // const button = <HTMLButtonElement>event.target;
     // document.execCommand('bold', false, null);
   }
-  italic(event: Event) {
+  private italic(event: Event) {
     this.execCommand('italic');
   }
-  underline(event: Event) {
+  private underline(event: Event) {
     this.execCommand('underline');
   }
-  fontsize(event: Event) {
+  private fontSize(event: Event) {
     const target = <Element>event.target;
     const value = target['value'] + '';
     this.execCommand('fontSize', false, value);
     target['value'] = '0';
   }
-  fontcolor(event: Event) {
+  private forecolor(event: Event) {
     const target = <Element>event.target;
     this.execCommand('forecolor', false, target['value']);
     target['value'] = '';
   }
-  backcolor(event: Event) {
+  private backcolor(event: Event) {
     const target = <Element>event.target;
     this.execCommand('backcolor', false, target['value']);
     target['value'] = '';
   }
-  highlight(event: Event) {
+  private highlight(event: Event) {
     const target = <Element>event.target;
     const value = target['value'] + '';
     const backColor = value.split(',').shift();
@@ -73,14 +89,14 @@ export class EditorComponent implements OnInit {
     this.execCommand('backColor', false, backColor);
     this.execCommand('foreColor', false, foreColor);
   }
-  link() {
+  private link() {
     const link = prompt('Enter a link', 'http://');
     this.execCommand('createLink', false, link);
   }
-  unlink() {
+  private unlink() {
     this.execCommand('unlink', false, null);
   }
-  table(event: Event) {
+  private table(event: Event) {
     const target = <Element>event.target;
     const value = target['value'] + '';
     const rows = parseInt(value.split('x').shift(), 10);
@@ -97,69 +113,68 @@ export class EditorComponent implements OnInit {
     this.execCommand('insertHTML', false, tag);
     target['value'] = '';
   }
-  fontName(event: Event) {
+  private fontName(event: Event) {
     const target = <Element>event.target;
     this.execCommand('fontName', false, target['value']);
     target['value'] = '';
   }
-  formatBlock(event: Event) {
+  private formatBlock(event: Event) {
     const target = <Element>event.target;
     this.execCommand('formatBlock', false, target['value']);
     target['value'] = '';
   }
 
-  indent() {
+  private indent() {
     this.execCommand('indent', false, null);
   }
 
-  outdent() {
+  private outdent() {
     this.execCommand('outdent', false, null);
   }
-  insertHorizontalRule() {
+  private insertHorizontalRule() {
     this.execCommand('insertHorizontalRule', false, null);
   }
 
-  insertImage() {
+  private insertImage() {
     const link = prompt('Enter a link', 'http://');
     this.execCommand('insertImage', false, link);
   }
-  bigContentSize() {
+  private bigContentSize() {
     this.contentSize = 'big';
   }
-  originalContentSize() {
+  private originalContentSize() {
     this.contentSize = 'normal';
   }
 
-  insertOrderedList(event: Event) {
+  private insertOrderedList(event: Event) {
     const target = <Element>event.target;
     this.execCommand('insertOrderedList', false, null);
   }
-  insertUnorderedList(event: Event) {
+  private insertUnorderedList(event: Event) {
     const target = <Element>event.target;
     this.execCommand('insertUnorderedList', false, null);
   }
 
-  justifyLeft(event: Event) {
+  private justifyLeft(event: Event) {
     const target = <Element>event.target;
     this.execCommand('justifyLeft', false, null);
   }
-  justifyCenter(event: Event) {
+  private justifyCenter(event: Event) {
     const target = <Element>event.target;
     this.execCommand('justifyCenter', false, null);
   }
-  justifyRight(event: Event) {
+  private justifyRight(event: Event) {
     const target = <Element>event.target;
     this.execCommand('justifyRight', false, null);
   }
-  removeFormat(event: Event) {
+  private removeFormat(event: Event) {
     const target = <Element>event.target;
     this.execCommand('removeFormat', false, null);
   }
-  strikeThrough(event: Event) {
+  private strikeThrough(event: Event) {
     const target = <Element>event.target;
     this.execCommand('strikeThrough', false, null);
   }
-
 
 }
 
