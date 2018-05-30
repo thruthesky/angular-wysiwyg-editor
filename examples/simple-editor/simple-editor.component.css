@@ -1,0 +1,16 @@
+::ng-deep .editor .content {
+    padding: 8px;
+    overflow: auto;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    width: 100%;
+    height: 200px;
+    background-color: white;
+    color: black;
+}
+::ng-deep .editor .content[size='big'] {
+    height: 600px;
+}
+::ng-deep .editor .content img {
+    max-width: 100%;
+}

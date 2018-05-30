@@ -1,0 +1,18 @@
+<font size="7">Simple Editor</font>
+<app-editor-component #editorComponent [buttons]="['bold']"></app-editor-component>
+<button (click)=" onSubmit() ">Submit</button>
+Result:
+<div [innerHTML]=" html "></div>
+<section class="editor-help">
+  <ul>
+    <li>
+      Shortcut
+      <ol>
+        <li>Copy - CTRL + C</li>
+        <li>Paste - CTRL + D</li>
+        <li>Bold - CTRL + B</li>
+      </ol>
+    </li>
+  </ul>
+</section>
+
