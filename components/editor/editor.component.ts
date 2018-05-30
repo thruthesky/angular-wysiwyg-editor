@@ -2,7 +2,14 @@ import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@
 
 @Component({
   selector: 'app-editor-component',
-  templateUrl: './editor.component.html'
+  templateUrl: './editor.component.html',
+  styles: [`
+    .content {
+      border: 1px solid grey;
+      height: 200px;
+    }
+    .content[size="big"] { height: 600px; }
+  `]
 })
 export class EditorComponent implements OnInit {
 
@@ -23,7 +30,7 @@ export class EditorComponent implements OnInit {
   }
   @HostListener('input', ['$event.target']) onContentChange(target: Element) {
     if (target && target.className && target.className === 'content') {
-      console.log('html: ', this.editorComponent.nativeElement.innerHTML);
+      // console.log('html: ', this.editorComponent.nativeElement.innerHTML);
     }
   }
 
