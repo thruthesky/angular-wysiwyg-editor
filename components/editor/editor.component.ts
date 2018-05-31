@@ -44,14 +44,26 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     setTimeout(() => {
-      if ( this.init.cursor ) {
-        this.setEndOfContenteditable(this.editorComponent.nativeElement);
+      if (this.init.cursor) {
+        this.setEndOfContenteditable();
       }
     }, 100);
 
+    // setInterval(() => {
+
+    //   console.log('caret: ', this.getCaret(this.editorComponent.nativeElement));
+    // }, 1000);
+
 
   }
-  setEndOfContenteditable(contentEditableElement) {
+  /**
+   * 커서를 에디터 맨 마지막에 놓는다.
+   *
+   * 소스코드를 https://gist.github.com/al3x-edge/1010364 에서 가져왔다.
+   *
+   */
+  setEndOfContenteditable() {
+    const contentEditableElement = this.editorComponent.nativeElement;
     let range, selection;
     // Firefox, Chrome, Opera, Safari, IE 9+
     if (document.createRange) {
@@ -68,6 +80,32 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
       range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
       range.select(); // Select the range (make it the visible selection
     }
+  }
+
+
+  /**
+   * 에디터의 커서 위치를 찾는다.
+   * 에디터에 커서가 위치하지 않았으면 0을 리턴한다.
+   * 주의. 커서가 에디터에 있는지 없는지만 판별해서, 커서가 에디터에 없으면, 커서를 추가하는 것만 한다. (이미지 추가 등에 필요)
+   */
+  getCaret() {
+    const element = this.editorComponent.nativeElement;
+    let caretOffset = 0;
+    if (typeof window.getSelection !== 'undefined') {
+      const range = window.getSelection().getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(element);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      caretOffset = preCaretRange.toString().length;
+    } else if (typeof document['selection'] !== 'undefined' && document['selection'].type !== 'Control') {
+      const textRange = document['selection'].createRange();
+      const preCaretTextRange = document.body['createTextRange']();
+      preCaretTextRange.moveToElementText(element);
+      preCaretTextRange.setEndPoint('EndToEnd', textRange);
+      caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+
   }
 
 
@@ -178,9 +216,17 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
     this.execCommand('insertHorizontalRule', false, null);
   }
 
-  private insertImage() {
-    const link = prompt('Enter a link', 'http://');
-    this.execCommand('insertImage', false, link);
+  insertImage(src?, name?) {
+    if (!src) {
+      src = prompt('Enter a link', 'http://');
+    }
+    if ( ! this.getCaret() ) {
+      this.setEndOfContenteditable();
+    }
+    const tag = `<IMG class="editor-image" SRC="${src}" ALT="${name}" style="max-width: 100%;"><BR>Image: ${name}<BR>`;
+    this.execCommand('insertHTML', false, tag);
+    this.setEndOfContenteditable();
+    // this.execCommand('insertImage', false, src);
   }
   private bigContentSize() {
     this.contentSize = 'big';

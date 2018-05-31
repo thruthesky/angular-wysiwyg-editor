@@ -111,7 +111,7 @@
 
     <button type="button" (click)="outdent( $event )" *ngIf=" is('outdent') ">outdent</button>
     <button type="button" (click)="insertHorizontalRule( $event )" *ngIf=" is('insertline') ">Line</button>
-    <button type="button" (click)="insertImage( $event )" *ngIf=" is('insertimage') ">Image</button>
+    <button type="button" (click)="insertImage()" *ngIf=" is('insertimage') ">Image</button>
 
     <button type="button" (click)="insertOrderedList( $event )" *ngIf=" is('orderedlist') ">OL</button>
     <button type="button" (click)="insertUnorderedList( $event )" *ngIf=" is('unorderedlist') ">UL</button>
