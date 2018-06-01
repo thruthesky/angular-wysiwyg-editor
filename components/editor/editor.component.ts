@@ -7,12 +7,36 @@ type COMMAND = 'bold' | 'italic' | 'underline' | 'fontsize' | 'forecolor' | 'bac
   selector: 'app-editor-component',
   templateUrl: './editor.component.html',
   styles: [`
-    .content {
+    .editor .content {
+      padding: 8px;
       overflow: auto;
       border: 1px solid grey;
       height: 200px;
     }
-    .content[size="big"] { height: 600px; }
+    .editor .content[size="big"] { height: 600px; }
+
+    .editor .buttons {
+      margin-bottom: 8px;
+    }
+    .editor .buttons button {
+      display: inline-block;
+      margin-left: 2px;
+      border: 0;
+      border-radius: 2px;
+      font-size: 8pt;
+      background-color: #888;
+      color: white;
+      cursor: pointer;
+    }
+    .editor .buttons button:hover {
+      background-color: #444;
+    }
+    .editor .buttons select {
+      margin-left: 2px;
+      border: 1px solid #888;
+      border-radius: 2px;
+      font-size: 8pt;
+    }
   `]
 })
 export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
@@ -28,7 +52,69 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
    */
   @Input() buttons: Array<COMMAND> = null;
   contentSize: 'big' | 'normal' = 'normal';
-  constructor() { }
+
+  t = {
+    strike: 'Strike',
+    size: 'Size',
+    forecolor: 'Color',
+    backcolor: 'Background Color',
+    highlight: 'Highlight',
+    link: 'Link',
+    unlink: 'Unlink',
+    table: 'Table',
+    fontname: 'Font Name',
+    format: 'Format',
+    indent: 'indent',
+    outdent: 'outdent',
+    image: 'Image',
+    orderedlist: 'OL',
+    unorderedlist: 'UL',
+    left: 'Left',
+    center: 'Center',
+    right: 'Right',
+    unformat: 'Unformat',
+    bigView: '+',
+    smallView: '-',
+    line: 'Line',
+    bold: 'B',
+    italic: 'I',
+    underline: 'U'
+  };
+
+  tKorean = {
+    strike: '가운데줄',
+    size: '글자크기',
+    forecolor: '글자색',
+    backcolor: '배경색',
+    highlight: '강조표시',
+    link: '링크',
+    unlink: '링크해제',
+    table: '테이블',
+    fontname: '글자체',
+    format: '포멧(헤더)',
+    indent: '들여쓰기',
+    outdent: '내어쓰기',
+    image: '사진',
+    orderedlist: '목록(점)',
+    unorderedlist: '목록(번호)',
+    left: '왼쪽',
+    center: '중간',
+    right: '오른쪽',
+    unformat: '양식제거',
+    bigView: '크게',
+    smallView: '작게',
+    line: '라인분리',
+    bold: '굵게',
+    italic: '기울기',
+    underline: '밑줄'
+  };
+
+  constructor() {
+    const ln = this.getBrowserLanguage();
+    if ( ln === 'ko' ) {
+      this.t = this.tKorean;
+    }
+  }
 
   ngOnInit() {
   }
@@ -115,6 +201,28 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
   putContent(html: string) {
     this.editorComponent.nativeElement.innerHTML = html;
   }
+  /**
+   * exp 에 해당하는 Element 를 삭제한다.
+   * 편집기의 내용 중에서 삭제하고 싶은 것이 있으면 이 메소드를 사용하면 된다.
+   *
+   * @example
+   *      this.editorComponent.removeContent(`img[idx="${idx}"]`);
+   *
+   * @param querySelector() 에 들어가는 표현. 이 표현으로 삭제할 항목(HTML Element)을 매치한다.
+   */
+  removeContent(exp) {
+    if ( ! exp ) {
+      return;
+    }
+    const container = this.editorComponent.nativeElement;
+    const match = container.querySelector(exp);
+    if ( ! match ) {
+      return;
+    }
+    container.removeChild(match);
+    this.putContent( container.innerHTML );
+  }
+
   private is(buttonName: COMMAND) {
     if (this.buttons === null) {
       return true;
@@ -172,7 +280,10 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
   private link() {
     const link = prompt('Enter a link', 'http://');
-    this.execCommand('createLink', false, link);
+    console.log('link: ', link);
+    if ( link ) {
+      this.execCommand('createLink', false, link);
+    }
   }
   private unlink() {
     this.execCommand('unlink', false, null);
@@ -216,14 +327,19 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
     this.execCommand('insertHorizontalRule', false, null);
   }
 
-  insertImage(src?, name?) {
+  /**
+   * 이미지를 추가 할 때, style 을 같이 추가해야 하기 때문에, insertHTML 로 한다.
+   * @param src Image src
+   * @param name Image name
+   */
+  insertImage(src?, name?, idx?) {
     if (!src) {
       src = prompt('Enter a link', 'http://');
     }
     if ( ! this.getCaret() ) {
       this.setEndOfContenteditable();
     }
-    const tag = `<IMG class="editor-image" SRC="${src}" ALT="${name}" style="max-width: 100%;"><BR>Image: ${name}<BR>`;
+    const tag = `<IMG class="editor-image" SRC="${src}" ALT="${name}" idx="${idx}" style="max-width: 100%;"><BR>Image: ${name}<BR>`;
     this.execCommand('insertHTML', false, tag);
     this.setEndOfContenteditable();
     // this.execCommand('insertImage', false, src);
@@ -263,6 +379,50 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
   private strikeThrough(event: Event) {
     const target = <Element>event.target;
     this.execCommand('strikeThrough', false, null);
+  }
+
+
+    /**
+     * Returns browser language
+     *
+     * @param full If it is true, then it returns the full language string like 'en-US'.
+     *              Otherwise, it returns the first two letters like 'en'.
+     *
+     * @returns
+     *      - the browser language like 'en', 'en-US', 'ko', 'ko-KR'
+     *      - null if it cannot detect a language.
+     */
+    private getBrowserLanguage(full = false): string {
+      const nav = window.navigator;
+      const browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'];
+      let ln: string = null;
+      // support for HTML 5.1 "navigator.languages"
+      if (Array.isArray(nav.languages)) {
+          for (let i = 0; i < nav.languages.length; i++) {
+              const language = nav.languages[i];
+              if (language && language.length) {
+                  ln = language;
+                  break;
+              }
+          }
+      }
+
+      // support for other well known properties in browsers
+      for (let i = 0; i < browserLanguagePropertyKeys.length; i++) {
+          const language = nav[browserLanguagePropertyKeys[i]];
+          if (language && language.length) {
+              ln = language;
+              break;
+          }
+      }
+
+      if (ln) {
+          if (full === false) {
+              ln = ln.substring(0, 2);
+          }
+      }
+
+      return ln;
   }
 
 }

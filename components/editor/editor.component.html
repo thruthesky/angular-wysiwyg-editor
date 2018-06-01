@@ -1,10 +1,11 @@
 <div class="editor">
   <div class="buttons">
-    <button type="button" (click)="bold( $event )" *ngIf=" is('bold') ">B</button>
-    <button type="button" (click)="italic( $event )" *ngIf=" is('italic') ">I</button>
-    <button type="button" (click)="underline( $event )" *ngIf=" is('underline') ">U</button>
+    <button type="button" (click)="bold( $event )" *ngIf=" is('bold') ">{{ t.bold }}</button>
+    <button type="button" (click)="italic( $event )" *ngIf=" is('italic') ">{{ t.italic }}</button>
+    <button type="button" (click)="underline( $event )" *ngIf=" is('underline') ">{{ t.underline }}</button>
+    <button type="button" (click)="strikeThrough( $event )" *ngIf=" is('strike') ">{{ t.strike }}</button>
     <select type="button" (change)="fontSize( $event )" *ngIf=" is('fontsize') ">
-      <option value='0'>Size</option>
+      <option value='0'>{{ t.size }}</option>
       <option value='1'>1</option>
       <option value='2'>2</option>
       <option value='3'>3</option>
@@ -14,7 +15,7 @@
       <option value='7'>7</option>
     </select>
     <select type="button" (change)="forecolor( $event )" *ngIf=" is('forecolor') ">
-      <option value=''>Color</option>
+      <option value=''>{{ t.forecolor }}</option>
       <option value='black'>Black</option>
       <option value='blue'>Blue</option>
       <option value='blueviolet'>BlueViolet</option>
@@ -28,7 +29,7 @@
       <option value='yellow'>Yellow</option>
     </select>
     <select type="button" (change)="backcolor( $event )" *ngIf=" is('backcolor') ">
-      <option value=''>Background Color</option>
+      <option value=''>{{ t.backcolor }}</option>
       <option value='black'>Black</option>
       <option value='blue'>Blue</option>
       <option value='blueviolet'>BlueViolet</option>
@@ -44,7 +45,7 @@
     </select>
 
     <select type="button" (change)="highlight( $event )" *ngIf=" is('highlight') ">
-      <option value=''>Highlight</option>
+      <option value=''>{{ t.highlight }}</option>
       <option value='black,white'>Black and White</option>
       <option value='blue,white'>Blue and White</option>
       <option value='green,white'>Green and White</option>
@@ -52,11 +53,11 @@
       <option value='gold,white'>Yellow and White</option>
     </select>
 
-    <button type="button" (click)="link( $event )" *ngIf=" is('link') ">Link</button>
-    <button type="button" (click)="unlink( $event )" *ngIf=" is('unlink') ">Unlink</button>
+    <button type="button" (click)="link( $event )" *ngIf=" is('link') ">{{ t.link }}</button>
+    <button type="button" (click)="unlink( $event )" *ngIf=" is('unlink') ">{{ t.unlink }}</button>
 
     <select type="button" (change)="table( $event )" *ngIf=" is('table') ">
-      <option value=''>Table</option>
+      <option value=''>{{ t.table }}</option>
       <option value='1x2'>1x2</option>
       <option value='1x3'>1x3</option>
       <option value='1x4'>1x4</option>
@@ -81,7 +82,7 @@
 
 
     <select type="button" (change)="fontName( $event )" *ngIf=" is('fontname') ">
-      <option value=''>Font Name</option>
+      <option value=''>{{ t.fontname }}</option>
       <option value='Arial'>Arial</option>
       <option value='Arial Black'>Arial Black</option>
       <option value='Comic Sans MS'>Comic Sans MS</option>
@@ -97,7 +98,7 @@
 
 
     <select type="button" (change)="formatBlock( $event )" *ngIf=" is('formatblock') ">
-      <option value=''>Format</option>
+      <option value=''>{{ t.format }}</option>
       <option value='H1'>H1</option>
       <option value='H2'>H2</option>
       <option value='H3'>H3</option>
@@ -107,21 +108,20 @@
       <option value='P'>Paragraph</option>
     </select>
 
-    <button type="button" (click)="indent( $event )" *ngIf=" is('indent') ">indent</button>
+    <button type="button" (click)="indent( $event )" *ngIf=" is('indent') ">{{ t.indent }}</button>
 
-    <button type="button" (click)="outdent( $event )" *ngIf=" is('outdent') ">outdent</button>
-    <button type="button" (click)="insertHorizontalRule( $event )" *ngIf=" is('insertline') ">Line</button>
-    <button type="button" (click)="insertImage()" *ngIf=" is('insertimage') ">Image</button>
+    <button type="button" (click)="outdent( $event )" *ngIf=" is('outdent') ">{{ t.outdent }}</button>
+    <button type="button" (click)="insertHorizontalRule( $event )" *ngIf=" is('insertline') ">{{ t.line }}</button>
+    <button type="button" (click)="insertImage()" *ngIf=" is('insertimage') ">{{ t.image }}</button>
 
-    <button type="button" (click)="insertOrderedList( $event )" *ngIf=" is('orderedlist') ">OL</button>
-    <button type="button" (click)="insertUnorderedList( $event )" *ngIf=" is('unorderedlist') ">UL</button>
-    <button type="button" (click)="justifyLeft( $event )" *ngIf=" is('left') ">Left</button>
-    <button type="button" (click)="justifyCenter( $event )" *ngIf=" is('center') ">Center</button>
-    <button type="button" (click)="justifyRight( $event )" *ngIf=" is('right') ">Right</button>
-    <button type="button" (click)="removeFormat( $event )" *ngIf=" is('removeformat') ">Unformat</button>
-    <button type="button" (click)="strikeThrough( $event )" *ngIf=" is('strike') ">Strike</button>
-    <button type="button" (click)="bigContentSize( $event )" *ngIf=" is('big') ">+</button>
-    <button type="button" (click)="originalContentSize( $event )" *ngIf=" is('normal') ">-</button>
+    <button type="button" (click)="insertOrderedList( $event )" *ngIf=" is('orderedlist') ">{{ t.orderedlist }}</button>
+    <button type="button" (click)="insertUnorderedList( $event )" *ngIf=" is('unorderedlist') ">{{ t.unorderedlist }}</button>
+    <button type="button" (click)="justifyLeft( $event )" *ngIf=" is('left') ">{{ t.left }}</button>
+    <button type="button" (click)="justifyCenter( $event )" *ngIf=" is('center') ">{{ t.center }}</button>
+    <button type="button" (click)="justifyRight( $event )" *ngIf=" is('right') ">{{ t.right }}</button>
+    <button type="button" (click)="removeFormat( $event )" *ngIf=" is('removeformat') ">{{ t.unformat }}</button>
+    <button type="button" (click)="bigContentSize( $event )" *ngIf=" is('big') ">{{ t.bigView }}</button>
+    <button type="button" (click)="originalContentSize( $event )" *ngIf=" is('normal') ">{{ t.smallView }}</button>
 
   </div>
   <div #editorContent class="content" [attr.size]=" contentSize " contenteditable="true">
