@@ -1,128 +1,136 @@
+<ng-template #tBold><button type="button" (click)="bold( $event )">{{ t.bold }}</button></ng-template>
+<ng-template #tItalic><button type="button" (click)="italic( $event )">{{ t.italic }}</button></ng-template>
+<ng-template #tUnderline><button type="button" (click)="underline( $event )">{{ t.underline }}</button></ng-template>
+<ng-template #tStrike><button type="button" (click)="strikeThrough( $event )">{{ t.strike }}</button></ng-template>
+<ng-template #tFontsize>
+    <select (change)="fontSize( $event )">
+        <option value='0'>{{ t.size }}</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+        <option value='4'>4</option>
+        <option value='5'>5</option>
+        <option value='6'>6</option>
+        <option value='7'>7</option>
+      </select>
+</ng-template>
+<ng-template #tForecolor>
+    <select (change)="forecolor( $event )">
+    <option value=''>{{ t.forecolor }}</option>
+    <option value='black'>Black</option>
+    <option value='blue'>Blue</option>
+    <option value='blueviolet'>BlueViolet</option>
+    <option value='brown'>Brown</option>
+    <option value='gold'>Gold</option>
+    <option value='green'>Green</option>
+    <option value='grey'>Grey</option>
+    <option value='navy'>Navy</option>
+    <option value='red'>Red</option>
+    <option value='tomato'>Tomato</option>
+    <option value='yellow'>Yellow</option>
+  </select>
+</ng-template>
+<ng-template #tBackcolor>
+    <select (change)="backcolor( $event )">
+        <option value=''>{{ t.backcolor }}</option>
+        <option value='black'>Black</option>
+        <option value='blue'>Blue</option>
+        <option value='blueviolet'>BlueViolet</option>
+        <option value='brown'>Brown</option>
+        <option value='darkblue'>DarkBlue</option>
+        <option value='gold'>Gold</option>
+        <option value='green'>Green</option>
+        <option value='grey'>Grey</option>
+        <option value='navy'>Navy</option>
+        <option value='red'>Red</option>
+        <option value='tomato'>Tomato</option>
+        <option value='yellow'>Yellow</option>
+      </select>
+</ng-template>
+<ng-template #tHighlight>
+    <select (change)="highlight( $event )">
+        <option value=''>{{ t.highlight }}</option>
+        <option value='black,white'>Black and White</option>
+        <option value='blue,white'>Blue and White</option>
+        <option value='green,white'>Green and White</option>
+        <option value='red,white'>Red and White</option>
+        <option value='gold,white'>Yellow and White</option>
+      </select>
+</ng-template>
+<ng-template #tLink><button type="button" (click)="link( $event )">{{ t.link }}</button></ng-template>
+<ng-template #tUnlink><button type="button" (click)="unlink( $event )">{{ t.unlink }}</button></ng-template>
+<ng-template #tTable>
+    <select (change)="table( $event )">
+        <option value=''>{{ t.table }}</option>
+        <option value='1x2'>1x2</option>
+        <option value='1x3'>1x3</option>
+        <option value='1x4'>1x4</option>
+        <option value='1x5'>1x5</option>
+        <option value='2x2'>2x2</option>
+        <option value='2x3'>2x3</option>
+        <option value='2x4'>2x4</option>
+        <option value='2x5'>2x5</option>
+        <option value='3x2'>3x2</option>
+        <option value='3x3'>3x3</option>
+        <option value='3x4'>3x4</option>
+        <option value='3x5'>3x5</option>
+        <option value='4x2'>4x2</option>
+        <option value='4x3'>4x3</option>
+        <option value='4x4'>4x4</option>
+        <option value='4x5'>4x5</option>
+        <option value='5x2'>5x2</option>
+        <option value='5x3'>5x3</option>
+        <option value='5x4'>5x4</option>
+        <option value='5x5'>5x5</option>
+      </select>
+</ng-template>
+<ng-template #tFontname>
+    <select (change)="fontName( $event )">
+        <option value=''>{{ t.fontname }}</option>
+        <option value='Arial'>Arial</option>
+        <option value='Arial Black'>Arial Black</option>
+        <option value='Comic Sans MS'>Comic Sans MS</option>
+        <option value='Courier New'>Courier New</option>
+        <option value='Georgia'>Georgia</option>
+        <option value='Helvetica'>Helvetica</option>
+        <option value='Impact'>Impact</option>
+        <option value='Times New Roman'>Times New Roman</option>
+        <option value='Verdana'>Verdana</option>
+        <option value='맑은 고딕,Malgun Gothic,AppleGothic'>맑은 고딕</option>
+      </select>
+</ng-template>
+<ng-template #tFormatblock>
+    <select (change)="formatBlock( $event )">
+        <option value=''>{{ t.format }}</option>
+        <option value='H1'>H1</option>
+        <option value='H2'>H2</option>
+        <option value='H3'>H3</option>
+        <option value='H4'>H4</option>
+        <option value='H5'>H5</option>
+        <option value='H6'>H6</option>
+        <option value='P'>Paragraph</option>
+      </select>
+</ng-template>
+<ng-template #tIndent><button type="button" (click)="indent( $event )">{{ t.indent }}</button></ng-template>
+<ng-template #tOutdent><button type="button" (click)="outdent( $event )">{{ t.outdent }}</button></ng-template>
+<ng-template #tInsertline><button type="button" (click)="insertHorizontalRule( $event )">{{ t.line }}</button></ng-template>
+<ng-template #tImage><button type="button" (click)="insertImage()">{{ t.image }}</button></ng-template>
+<ng-template #tOrderedlist><button type="button" (click)="insertOrderedList( $event )">{{ t.orderedlist }}</button></ng-template>
+<ng-template #tUnorderedlist><button type="button" (click)="insertUnorderedList( $event )">{{ t.unorderedlist }}</button></ng-template>
+<ng-template #tLeft><button type="button" (click)="justifyLeft( $event )">{{ t.left }}</button></ng-template>
+<ng-template #tCenter><button type="button" (click)="justifyCenter( $event )">{{ t.center }}</button></ng-template>
+<ng-template #tRight><button type="button" (click)="justifyRight( $event )">{{ t.right }}</button></ng-template>
+<ng-template #tUnformat><button type="button" (click)="removeFormat( $event )">{{ t.unformat }}</button></ng-template>
+<ng-template #tBigview><button type="button" (click)="bigContentSize( $event )">{{ t.bigView }}</button></ng-template>
+<ng-template #tSmallview><button type="button" (click)="originalContentSize( $event )">{{ t.smallView }}</button></ng-template>
+
+
+
 <div class="editor">
   <div class="buttons">
-    <button type="button" (click)="bold( $event )" *ngIf=" is('bold') ">{{ t.bold }}</button>
-    <button type="button" (click)="italic( $event )" *ngIf=" is('italic') ">{{ t.italic }}</button>
-    <button type="button" (click)="underline( $event )" *ngIf=" is('underline') ">{{ t.underline }}</button>
-    <button type="button" (click)="strikeThrough( $event )" *ngIf=" is('strike') ">{{ t.strike }}</button>
-    <select type="button" (change)="fontSize( $event )" *ngIf=" is('fontsize') ">
-      <option value='0'>{{ t.size }}</option>
-      <option value='1'>1</option>
-      <option value='2'>2</option>
-      <option value='3'>3</option>
-      <option value='4'>4</option>
-      <option value='5'>5</option>
-      <option value='6'>6</option>
-      <option value='7'>7</option>
-    </select>
-    <select type="button" (change)="forecolor( $event )" *ngIf=" is('forecolor') ">
-      <option value=''>{{ t.forecolor }}</option>
-      <option value='black'>Black</option>
-      <option value='blue'>Blue</option>
-      <option value='blueviolet'>BlueViolet</option>
-      <option value='brown'>Brown</option>
-      <option value='gold'>Gold</option>
-      <option value='green'>Green</option>
-      <option value='grey'>Grey</option>
-      <option value='navy'>Navy</option>
-      <option value='red'>Red</option>
-      <option value='tomato'>Tomato</option>
-      <option value='yellow'>Yellow</option>
-    </select>
-    <select type="button" (change)="backcolor( $event )" *ngIf=" is('backcolor') ">
-      <option value=''>{{ t.backcolor }}</option>
-      <option value='black'>Black</option>
-      <option value='blue'>Blue</option>
-      <option value='blueviolet'>BlueViolet</option>
-      <option value='brown'>Brown</option>
-      <option value='darkblue'>DarkBlue</option>
-      <option value='gold'>Gold</option>
-      <option value='green'>Green</option>
-      <option value='grey'>Grey</option>
-      <option value='navy'>Navy</option>
-      <option value='red'>Red</option>
-      <option value='tomato'>Tomato</option>
-      <option value='yellow'>Yellow</option>
-    </select>
-
-    <select type="button" (change)="highlight( $event )" *ngIf=" is('highlight') ">
-      <option value=''>{{ t.highlight }}</option>
-      <option value='black,white'>Black and White</option>
-      <option value='blue,white'>Blue and White</option>
-      <option value='green,white'>Green and White</option>
-      <option value='red,white'>Red and White</option>
-      <option value='gold,white'>Yellow and White</option>
-    </select>
-
-    <button type="button" (click)="link( $event )" *ngIf=" is('link') ">{{ t.link }}</button>
-    <button type="button" (click)="unlink( $event )" *ngIf=" is('unlink') ">{{ t.unlink }}</button>
-
-    <select type="button" (change)="table( $event )" *ngIf=" is('table') ">
-      <option value=''>{{ t.table }}</option>
-      <option value='1x2'>1x2</option>
-      <option value='1x3'>1x3</option>
-      <option value='1x4'>1x4</option>
-      <option value='1x5'>1x5</option>
-      <option value='2x2'>2x2</option>
-      <option value='2x3'>2x3</option>
-      <option value='2x4'>2x4</option>
-      <option value='2x5'>2x5</option>
-      <option value='3x2'>3x2</option>
-      <option value='3x3'>3x3</option>
-      <option value='3x4'>3x4</option>
-      <option value='3x5'>3x5</option>
-      <option value='4x2'>4x2</option>
-      <option value='4x3'>4x3</option>
-      <option value='4x4'>4x4</option>
-      <option value='4x5'>4x5</option>
-      <option value='5x2'>5x2</option>
-      <option value='5x3'>5x3</option>
-      <option value='5x4'>5x4</option>
-      <option value='5x5'>5x5</option>
-    </select>
-
-
-    <select type="button" (change)="fontName( $event )" *ngIf=" is('fontname') ">
-      <option value=''>{{ t.fontname }}</option>
-      <option value='Arial'>Arial</option>
-      <option value='Arial Black'>Arial Black</option>
-      <option value='Comic Sans MS'>Comic Sans MS</option>
-      <option value='Courier New'>Courier New</option>
-      <option value='Georgia'>Georgia</option>
-      <option value='Helvetica'>Helvetica</option>
-      <option value='Impact'>Impact</option>
-      <option value='Times New Roman'>Times New Roman</option>
-      <option value='Verdana'>Verdana</option>
-      <option value='맑은 고딕,Malgun Gothic,AppleGothic'>맑은 고딕</option>
-    </select>
-
-
-
-    <select type="button" (change)="formatBlock( $event )" *ngIf=" is('formatblock') ">
-      <option value=''>{{ t.format }}</option>
-      <option value='H1'>H1</option>
-      <option value='H2'>H2</option>
-      <option value='H3'>H3</option>
-      <option value='H4'>H4</option>
-      <option value='H5'>H5</option>
-      <option value='H6'>H6</option>
-      <option value='P'>Paragraph</option>
-    </select>
-
-    <button type="button" (click)="indent( $event )" *ngIf=" is('indent') ">{{ t.indent }}</button>
-
-    <button type="button" (click)="outdent( $event )" *ngIf=" is('outdent') ">{{ t.outdent }}</button>
-    <button type="button" (click)="insertHorizontalRule( $event )" *ngIf=" is('insertline') ">{{ t.line }}</button>
-    <button type="button" (click)="insertImage()" *ngIf=" is('insertimage') ">{{ t.image }}</button>
-
-    <button type="button" (click)="insertOrderedList( $event )" *ngIf=" is('orderedlist') ">{{ t.orderedlist }}</button>
-    <button type="button" (click)="insertUnorderedList( $event )" *ngIf=" is('unorderedlist') ">{{ t.unorderedlist }}</button>
-    <button type="button" (click)="justifyLeft( $event )" *ngIf=" is('left') ">{{ t.left }}</button>
-    <button type="button" (click)="justifyCenter( $event )" *ngIf=" is('center') ">{{ t.center }}</button>
-    <button type="button" (click)="justifyRight( $event )" *ngIf=" is('right') ">{{ t.right }}</button>
-    <button type="button" (click)="removeFormat( $event )" *ngIf=" is('removeformat') ">{{ t.unformat }}</button>
-    <button type="button" (click)="bigContentSize( $event )" *ngIf=" is('big') ">{{ t.bigView }}</button>
-    <button type="button" (click)="originalContentSize( $event )" *ngIf=" is('normal') ">{{ t.smallView }}</button>
-
+    <ng-container *ngFor="let T of containerButtons">
+    <ng-container *ngTemplateOutlet=" T "></ng-container>
+    </ng-container>
   </div>
   <div #editorContent class="content" [attr.size]=" contentSize " contenteditable="true">
   </div>

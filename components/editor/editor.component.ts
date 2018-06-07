@@ -43,6 +43,32 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('editorContent') editorComponent: ElementRef;
 
+  @ViewChild('tBold') tBold: ElementRef;
+  @ViewChild('tItalic') tItalic: ElementRef;
+  @ViewChild('tUnderline') tUnderline: ElementRef;
+  @ViewChild('tStrike') tStrike: ElementRef;
+  @ViewChild('tFontsize') tFontsize: ElementRef;
+  @ViewChild('tForecolor') tForecolor: ElementRef;
+  @ViewChild('tBackcolor') tBackcolor: ElementRef;
+  @ViewChild('tHighlight') tHighlight: ElementRef;
+  @ViewChild('tLink') tLink: ElementRef;
+  @ViewChild('tUnlink') tUnlink: ElementRef;
+  @ViewChild('tTable') tTable: ElementRef;
+  @ViewChild('tFontname') tFontname: ElementRef;
+  @ViewChild('tFormatblock') tFormatblock: ElementRef;
+  @ViewChild('tIndent') tIndent: ElementRef;
+  @ViewChild('tOutdent') tOutdent: ElementRef;
+  @ViewChild('tInsertline') tInsertline: ElementRef;
+  @ViewChild('tImage') tImage: ElementRef;
+  @ViewChild('tOrderedlist') tOrderedlist: ElementRef;
+  @ViewChild('tUnorderedlist') tUnorderedlist: ElementRef;
+  @ViewChild('tLeft') tLeft: ElementRef;
+  @ViewChild('tCenter') tCenter: ElementRef;
+  @ViewChild('tRight') tRight: ElementRef;
+  @ViewChild('tUnformat') tUnformat: ElementRef;
+  @ViewChild('tBigview') tBigview: ElementRef;
+  @ViewChild('tSmallview') tSmallview: ElementRef;
+
   @Input() init = {
     content: '',
     cursor: false
@@ -51,6 +77,10 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
    * default buttons.
    */
   @Input() buttons: Array<COMMAND> = null;
+
+  nameButtons: { [name: string]: ElementRef } = {};
+  containerButtons: Array<ElementRef> = [];
+
   contentSize: 'big' | 'normal' = 'normal';
 
   t = {
@@ -111,7 +141,7 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor() {
     const ln = this.getBrowserLanguage();
-    if ( ln === 'ko' ) {
+    if (ln === 'ko') {
       this.t = this.tKorean;
     }
   }
@@ -120,10 +150,12 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges() {
-
+    setTimeout(() => this.resetButtons(), 100);
   }
 
   ngAfterViewInit() {
+
+
     console.log('EditorComponent::ngAfterViewInit() ', this.init);
     if (this.init.content) {
       this.putContent(this.init.content);
@@ -140,6 +172,46 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
     //   console.log('caret: ', this.getCaret(this.editorComponent.nativeElement));
     // }, 1000);
 
+
+  }
+
+  resetButtons() {
+
+
+    this.nameButtons['bold'] = this.tBold;
+    this.nameButtons['italic'] = this.tItalic;
+    this.nameButtons['underline'] = this.tUnderline;
+    this.nameButtons['strike'] = this.tStrike;
+    this.nameButtons['fontsize'] = this.tFontsize;
+    this.nameButtons['forecolor'] = this.tForecolor;
+    this.nameButtons['backcolor'] = this.tBackcolor;
+    this.nameButtons['highlight'] = this.tHighlight;
+    this.nameButtons['link'] = this.tLink;
+    this.nameButtons['unlink'] = this.tUnlink;
+    this.nameButtons['table'] = this.tTable;
+    this.nameButtons['fontname'] = this.tFontname;
+    this.nameButtons['formatblock'] = this.tFormatblock;
+    this.nameButtons['indent'] = this.tIndent;
+    this.nameButtons['outdent'] = this.tOutdent;
+    this.nameButtons['insertline'] = this.tInsertline;
+    this.nameButtons['insertimage'] = this.tImage;
+    this.nameButtons['orderedlist'] = this.tOrderedlist;
+    this.nameButtons['unorderedlist'] = this.tUnorderedlist;
+    this.nameButtons['left'] = this.tLeft;
+    this.nameButtons['center'] = this.tCenter;
+    this.nameButtons['right'] = this.tRight;
+    this.nameButtons['removeformat'] = this.tUnformat;
+    this.nameButtons['big'] = this.tBigview;
+    this.nameButtons['normal'] = this.tSmallview;
+
+
+    // const keys: Array<COMMAND> = <any>Object.keys(this.buttons);
+    // console.log('keys: ', keys);
+    for (const k of this.buttons) {
+      if (this.is(k)) {
+        this.containerButtons.push( this.nameButtons[k]);
+      }
+    }
 
   }
   /**
@@ -211,16 +283,16 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
    * @param querySelector() 에 들어가는 표현. 이 표현으로 삭제할 항목(HTML Element)을 매치한다.
    */
   removeContent(exp) {
-    if ( ! exp ) {
+    if (!exp) {
       return;
     }
     const container = this.editorComponent.nativeElement;
     const match = container.querySelector(exp);
-    if ( ! match ) {
+    if (!match) {
       return;
     }
     container.removeChild(match);
-    this.putContent( container.innerHTML );
+    this.putContent(container.innerHTML);
   }
 
   private is(buttonName: COMMAND) {
@@ -281,7 +353,7 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
   private link() {
     const link = prompt('Enter a link', 'http://');
     console.log('link: ', link);
-    if ( link ) {
+    if (link) {
       this.execCommand('createLink', false, link);
     }
   }
@@ -336,7 +408,7 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
     if (!src) {
       src = prompt('Enter a link', 'http://');
     }
-    if ( ! this.getCaret() ) {
+    if (!this.getCaret()) {
       this.setEndOfContenteditable();
     }
     const tag = `<IMG class="editor-image" SRC="${src}" ALT="${name}" idx="${idx}" style="max-width: 100%;"><BR>Image: ${name}<BR>`;
@@ -382,47 +454,47 @@ export class EditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
-    /**
-     * Returns browser language
-     *
-     * @param full If it is true, then it returns the full language string like 'en-US'.
-     *              Otherwise, it returns the first two letters like 'en'.
-     *
-     * @returns
-     *      - the browser language like 'en', 'en-US', 'ko', 'ko-KR'
-     *      - null if it cannot detect a language.
-     */
-    private getBrowserLanguage(full = false): string {
-      const nav = window.navigator;
-      const browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'];
-      let ln: string = null;
-      // support for HTML 5.1 "navigator.languages"
-      if (Array.isArray(nav.languages)) {
-          for (let i = 0; i < nav.languages.length; i++) {
-              const language = nav.languages[i];
-              if (language && language.length) {
-                  ln = language;
-                  break;
-              }
-          }
+  /**
+   * Returns browser language
+   *
+   * @param full If it is true, then it returns the full language string like 'en-US'.
+   *              Otherwise, it returns the first two letters like 'en'.
+   *
+   * @returns
+   *      - the browser language like 'en', 'en-US', 'ko', 'ko-KR'
+   *      - null if it cannot detect a language.
+   */
+  private getBrowserLanguage(full = false): string {
+    const nav = window.navigator;
+    const browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'];
+    let ln: string = null;
+    // support for HTML 5.1 "navigator.languages"
+    if (Array.isArray(nav.languages)) {
+      for (let i = 0; i < nav.languages.length; i++) {
+        const language = nav.languages[i];
+        if (language && language.length) {
+          ln = language;
+          break;
+        }
       }
+    }
 
-      // support for other well known properties in browsers
-      for (let i = 0; i < browserLanguagePropertyKeys.length; i++) {
-          const language = nav[browserLanguagePropertyKeys[i]];
-          if (language && language.length) {
-              ln = language;
-              break;
-          }
+    // support for other well known properties in browsers
+    for (let i = 0; i < browserLanguagePropertyKeys.length; i++) {
+      const language = nav[browserLanguagePropertyKeys[i]];
+      if (language && language.length) {
+        ln = language;
+        break;
       }
+    }
 
-      if (ln) {
-          if (full === false) {
-              ln = ln.substring(0, 2);
-          }
+    if (ln) {
+      if (full === false) {
+        ln = ln.substring(0, 2);
       }
+    }
 
-      return ln;
+    return ln;
   }
 
 }
