@@ -68,3 +68,7 @@ const html = this.editorComponent.getContent();
 
 * See examples folder to get sample working code.
     You can delete sample folder if you don't want.
+
+## Buttons
+
+* Buttons on editor appears in the order as they were given by [buttons] @Input() property.
